@@ -58,14 +58,12 @@ jobs:
       run: echo "pkg-version=$(cat bc-build.properties | grep release.version | awk -F ':' '{print $2}' | sed -e 's/ //g')" >> $GITHUB_ENV
 
     - name: Upload Artifacts to Nexus
-      with:
-        name: upload-artifacts
-        env:
-          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-          NEXUS_URL: ${{ secrets.NEXUS_URL }}
-        run: |
-          for i in "bcprov-jdk15on bcpkix-jdk15on bcpg-jdk15on bcjmail-jdk15on bcutil-jdk15on bctls-jdk15on bcmail-jdk15on bcprov-ext-jdk15on"; do
-            curl -v --user $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file build/artifacts/jdk1.5/jars/${i}-${pkg-version}.jar $NEXUS_URL/$i/${pkg-version}/${i}-${pkg-version}.jar
-          done
+      env:
+        NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        NEXUS_URL: ${{ secrets.NEXUS_URL }}
+      run: |
+        for i in "bcprov-jdk15on bcpkix-jdk15on bcpg-jdk15on bcjmail-jdk15on bcutil-jdk15on bctls-jdk15on bcmail-jdk15on bcprov-ext-jdk15on"; do
+          curl -v --user $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file build/artifacts/jdk1.5/jars/${i}-${pkg-version}.jar $NEXUS_URL/$i/${pkg-version}/${i}-${pkg-version}.jar
+        done
 
