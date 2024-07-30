@@ -1,0 +1,36 @@
+name: Build and Test jdk15on
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Provide the branch to build and run tests on
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.version }}"
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Set up Ant
+      uses: cedx/setup-ant@v2
+      with:
+        version: latest
+
+    - name: Verify Java version
+      run: java -version
+
+    - name: Run build script
+      run: ./build15+
+
