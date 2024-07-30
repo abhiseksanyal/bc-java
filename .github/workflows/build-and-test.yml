@@ -18,9 +18,9 @@ jobs:
         ref: "${{ github.event.inputs.version }}"
 
     - name: Set up JDK 8
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4.2.1
       with:
-        java-version: '11'
+        java-version: '8'
         distribution: 'adopt'
 
     - name: Set up Ant
@@ -32,5 +32,5 @@ jobs:
       run: java -version
 
     - name: Run build script
-      run: ./build15+
+      run: bash ./build15+
 
