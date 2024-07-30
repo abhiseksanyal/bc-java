@@ -31,8 +31,9 @@ jobs:
     - name: Verify Java version
       run: java -version
 
+    - name: Set JDKPATH required for build
+      run: echo "JDKPATH=$JAVA_HOME" >> $GITHUB_ENV
+
     - name: Run build script
       run: bash ./build15+
-      env:
-        JDKPATH: $JAVA_HOME
 
