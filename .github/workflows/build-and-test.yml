@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
-        path: build/artifacts/jdk1.5/jars/bcprov-jdk15on-*.jar
+        path: build/artifacts/jdk1.5/jars/*.jar
         retention-days: 5
 
 
