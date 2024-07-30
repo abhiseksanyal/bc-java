@@ -34,5 +34,5 @@ jobs:
     - name: Run build script
       run: bash ./build15+
       env:
-        JDKPATH: ${{ JAVA_HOME }}
+        JDKPATH: $JAVA_HOME
 
