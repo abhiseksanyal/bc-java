@@ -1,5 +1,4 @@
 name: Publish jdk15on
-description: Build and Publish jdk15on
 
 on:
   workflow_dispatch:
