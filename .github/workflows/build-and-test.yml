@@ -21,7 +21,7 @@ jobs:
       uses: actions/setup-java@v4.2.1
       with:
         java-version: '8'
-        distribution: 'adopt'
+        distribution: 'temurin'
 
     - name: Set up Ant
       uses: cedx/setup-ant@v2
@@ -33,4 +33,6 @@ jobs:
 
     - name: Run build script
       run: bash ./build15+
+      env:
+        JDKPATH: ${{ JAVA_HOME }}
 
