@@ -76,6 +76,6 @@ jobs:
           sed -i 's/${version}/'"${pkg_version}"'/g' pomfiles/${i}.pom
           cat pomfiles/${i}.pom
           echo "mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/${i}-${pkg_version}.jar"
-          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=$NEXUS_USERNAME -Dnexus_password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
+          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=gh-action-maven2 -Dnexus_password=anand -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
         done
 
