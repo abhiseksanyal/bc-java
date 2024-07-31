@@ -69,6 +69,7 @@ jobs:
         NEXUS_URL: ${{ secrets.NEXUS_URL }}
       run: |
         for i in "bcprov-jdk15on bcpkix-jdk15on bcpg-jdk15on bcjmail-jdk15on bcutil-jdk15on bctls-jdk15on bcmail-jdk15on bcprov-ext-jdk15on"; do
+          echo "Processing component ${i}"
           sed -i "s/\\${version}/${pkg-version}/g" pomfiles/${i}.pom
           mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg-version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/${i}-${pkg-version}.jar
         done
