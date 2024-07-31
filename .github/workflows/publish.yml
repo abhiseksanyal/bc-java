@@ -64,6 +64,10 @@ jobs:
       run: echo "pkg_version=$(cat bc-build.properties | grep release.version | awk -F ':' '{print $2}' | sed -e 's/ //g')" >> $GITHUB_ENV
 
     - name: Upload Artifacts to Nexus
+      env:
+        NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        NEXUS_URL: ${{ secrets.NEXUS_URL }}
       working-directory: ${{ github.workspace }}
       run: |
         for i in bcprov-jdk15on bcpkix-jdk15on bcpg-jdk15on bcjmail-jdk15on bcutil-jdk15on bctls-jdk15on bcmail-jdk15on bcprov-ext-jdk15on
@@ -73,6 +77,6 @@ jobs:
           sed -i 's/${version}/'"${pkg_version}"'/g' pomfiles/${i}.pom
           cat pomfiles/${i}.pom
           echo "mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/${i}-${pkg_version}.jar"
-          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=http://green-oss.lineaje.in:8081/repository/github-build-maven -Dnexus_username=gh-action-maven2 -Dnexus_password=anand -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
+          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
         done
 
