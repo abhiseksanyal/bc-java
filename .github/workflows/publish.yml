@@ -60,7 +60,7 @@ jobs:
       run: bash ./build15+
 
     - name: Set Package version required for upload
-      run: echo "pkg-version=$(cat bc-build.properties | grep release.version | awk -F ':' '{print $2}' | sed -e 's/ //g')" >> $GITHUB_ENV
+      run: echo "pkg_version=$(cat bc-build.properties | grep release.version | awk -F ':' '{print $2}' | sed -e 's/ //g')" >> $GITHUB_ENV
 
     - name: Upload Artifacts to Nexus
       env:
@@ -72,10 +72,10 @@ jobs:
         for i in bcprov-jdk15on bcpkix-jdk15on bcpg-jdk15on bcjmail-jdk15on bcutil-jdk15on bctls-jdk15on bcmail-jdk15on bcprov-ext-jdk15on
         do
           echo "Processing component ${i}"
-          echo "sed -i s/\${version}/${pkg-version}/g pomfiles/${i}.pom"
-          sed -i 's/${version}/'"${pkg-version}"'/g' pomfiles/${i}.pom
+          echo "sed -i s/\${version}/${pkg_version}/g pomfiles/${i}.pom"
+          sed -i 's/${version}/'"${pkg_version}"'/g' pomfiles/${i}.pom
           cat pomfiles/${i}.pom
-          echo "mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg-version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/${i}-${pkg-version}.jar"
-          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg-version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg-version}".jar
+          echo "mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/${i}-${pkg_version}.jar"
+          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
         done
 
