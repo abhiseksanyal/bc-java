@@ -62,11 +62,6 @@ jobs:
     - name: Set Package version required for upload
       run: echo "pkg-version=$(cat bc-build.properties | grep release.version | awk -F ':' '{print $2}' | sed -e 's/ //g')" >> $GITHUB_ENV
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-
     - name: Upload Artifacts to Nexus
       env:
         NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
