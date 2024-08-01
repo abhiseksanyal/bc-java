@@ -70,7 +70,6 @@
             <id>sign-artifacts</id>
             <phase>verify</phase> <!-- Ensure signing happens before deploy phase -->
             <goals>
-              <goal>sign</goal>
               <goal>sign-and-deploy-file</goal>
             </goals>
           </execution>
