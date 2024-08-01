@@ -75,6 +75,8 @@ jobs:
         do
           echo "Processing component ${i}"
           sed -i 's/${version}/'"${pkg_version}"'/g' pomfiles/${i}.pom
-          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=$NEXUS_USERNAME -Dnexus_password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
+          mvn gpg:sign -Dfile=pomfiles/${i}.pom
+          mvn gpg:sign -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
+          mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=$NEXUS_USERNAME -Dnexus_password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar -Dfiles=pomfiles/${i}.pom.asc,build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar.asc -Dtypes=asc,asc
         done
 
