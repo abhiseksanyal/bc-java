@@ -75,6 +75,6 @@ jobs:
         do
           echo "Processing component ${i}"
           sed -i 's/${version}/'"${pkg_version}"'/g' pomfiles/${i}.pom
-          mvn gpg:sign-and-deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=$NEXUS_USERNAME -Dnexus_password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
+          mvn gpg:sign-and-deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=$NEXUS_USERNAME -Dnexus_password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar -DgpgArguments=--pinentry-mode,loopback
         done
 
