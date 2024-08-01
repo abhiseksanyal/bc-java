@@ -43,8 +43,8 @@ jobs:
         overwrite-settings: false
         server-username: ${{ secrets.NEXUS_USERNAME }}
         server-password: ${{ secrets.NEXUS_PASSWORD }}
-        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
-        gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }} # Value of the GPG private key passphrase
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+        gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
     - name: Set up Ant
       uses: cedx/setup-ant@v2
@@ -68,15 +68,13 @@ jobs:
         NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
         NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         NEXUS_URL: ${{ secrets.NEXUS_URL }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       working-directory: ${{ github.workspace }}
       run: |
         for i in bcprov-jdk15on bcpkix-jdk15on bcpg-jdk15on bcjmail-jdk15on bcutil-jdk15on bctls-jdk15on bcmail-jdk15on bcprov-ext-jdk15on
         do
           echo "Processing component ${i}"
-          echo "sed -i s/\${version}/${pkg_version}/g pomfiles/${i}.pom"
           sed -i 's/${version}/'"${pkg_version}"'/g' pomfiles/${i}.pom
-          cat pomfiles/${i}.pom
-          echo "mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus-username=$NEXUS_USERNAME -Dnexus-password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/${i}-${pkg_version}.jar"
           mvn deploy:deploy-file -s settings.xml -DrepositoryId=nexus-write -Durl=$NEXUS_URL -Dnexus_username=$NEXUS_USERNAME -Dnexus_password=$NEXUS_PASSWORD -DgroupId=org.bouncycastle -DartifactId=${i} -Dversion=${pkg_version} -DpomFile=pomfiles/${i}.pom -Dfile=build/artifacts/jdk1.5/jars/"${i}"-"${pkg_version}".jar
         done
 
